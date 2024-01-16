@@ -2,20 +2,8 @@ type MyObject = {
   [key: string]: any[];
 };
 
-function findValueWithMaxArrayLength<T extends MyObject>(object: T) {
-  // Get an array of all the object's values.
-  const values = Object.values(object);
-
-  // Iterate over the array of values and get the length of each value.
-  const valueLengths = values.map(value => value.length);
-
-  // Find the maximum length of all the values.
-  const maxArrayLength = Math.max(...valueLengths);
-
-  // Return the value whose length is equal to the maximum length.
-  return values.find(value => value.length === maxArrayLength);
-}
-
+const findValueWithMaxArrayLength = <T extends MyObject>(object: T): any[] | undefined =>
+  Object.values(object).find(value => value.length === Math.max(...Object.values(object).map(value => value.length)));
 // Example usage:
 const object: MyObject = {
   key1: [1, 2, 3],
