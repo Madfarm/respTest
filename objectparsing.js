@@ -1,15 +1,15 @@
 function findKeyWithMaxArrayLength(object) {
-    // Get an array of all the object's keys.
-    const keys = Object.keys(object);
-  
-    // Iterate over the array of keys and get the length of each array value.
-    const arrayLengths = keys.map(key => object[key].length);
-  
-    // Find the maximum length of all the array values.
-    const maxArrayLength = Math.max(...arrayLengths);
-  
-    // Return the key whose array value has the maximum length.
-    return keys.find(key => object[key].length === maxArrayLength);
+     // Get an array of all the object's values.
+  const values = Object.values(object);
+
+  // Iterate over the array of values and get the length of each value.
+  const valueLengths = values.map(value => value.length);
+
+  // Find the maximum length of all the values.
+  const maxArrayLength = Math.max(...valueLengths);
+
+  // Return the value whose length is equal to the maximum length.
+  return values.find(value => value.length === maxArrayLength);
   }
   
   // Example usage:
