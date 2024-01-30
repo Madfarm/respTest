@@ -8,11 +8,14 @@ function decodeAlienMessage(array) {
           return "[?]";
         }
       } else if (typeof element === "boolean") {
-        return element ? "yes " : "no ";
+        return element ? "yes" : "no";
       } else if (typeof element === "string") {
         return element;
       } else if (Array.isArray(element)) {
-        return element.flatMap(processElement).join("");
+        // Incorrect line was:
+        // return element.flatMap(processElement).join("");
+        // Corrected line:
+        return element.map(processElement).join(""); // Use map instead of flatMap
       } else {
         return ""; // Ignore non-array elements
       }
