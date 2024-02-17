@@ -2,8 +2,8 @@ type MyObjectB = {
     [key: string]: any[];
   };
 
-  const findValueWithMaxArrayLengthB = <T extends MyObjectB>(object: T): any[] =>
-  Object.values(object).find(value => value.length === Math.max(...Object.values(object).map(value => value.length))) || [];
+  const findValueWithMaxArrayLengthB = <T extends MyObjectB>(object: T): any[] | undefined =>
+  Object.values(object).find(value => value.length === Math.max(...Object.values(object).map(value => value.length)));
 
   const objectB: MyObjectB = {
     key1: [1, 2, 3],
