@@ -1,59 +1,88 @@
-class Pasta {
+class Ingredient {
+    constructor(name, spiceLevel = 0) { // Default spice level to 0
+      this.name = name;
+      this.spiceLevel = spiceLevel;
+    }
+  }
+  
+  class Sauce {
+    constructor(name, spiceLevel) {
+      this.name = name;
+      if (spiceLevel >= 0 && spiceLevel <= 10) {
+        this.spiceLevel = spiceLevel;
+      } else {
+        throw new Error("Invalid spice level - must be 0-10");
+      }
+    }
+  }
+  
+  class Pasta {
     constructor(type) {
-        this.type = type;
-        this.isReady = false;
-        this.ingredients = [];
-        this.cookingTime = 0;
+      this.type = type;
+      this.ingredients = [];
+      this.sauce = null;
+      this.isReady = false;
+  
+      // Set defaults based on pasta type
+      switch (type) {
+        case "spaghetti":
+          this.cookingTime = 10;
+          this.sauce = new Sauce("tomato sauce", 2); 
+          this.ingredients.push(new Ingredient("ground beef")); // Regular ingredient
+          this.ingredients.push(new Ingredient("garlic", 1)); // Example with spice
+          break;
+        case "fettuccine":
+          this.cookingTime = 12;
+          this.sauce = new Sauce("alfredo sauce", 1);
+          this.ingredients.push(new Ingredient("chicken"));
+          break;
+        case "penne":
+          this.cookingTime = 9;
+          this.sauce = new Sauce("arrabiata sauce", 5);
+          this.ingredients.push(new Ingredient("sausage"));
+          break;
+        default:
+          console.error("Invalid pasta type");
+      }
     }
-
-    // Default preparation method
-    prepare() {
-        console.log(`Preparing ${this.type} pasta...`);
-        this.boilWater();
-        this.addPasta();
-    }
-
-    // Shared methods
-    boilWater() {
-        console.log('Boiling water...');
-    }
-
-    addPasta() {
-        console.log(`Adding ${this.type} to boiling water...`);
-    }
-
-    // Type-specific methods
-    prepareSpaghetti() {
-        this.ingredients = ["spaghetti", "tomato sauce", "ground beef"];
-        this.cookingTime = 10; // Placeholder time in minutes
-    }
-
-    prepareFettuccine() {
-        this.ingredients = ["fettuccine", "alfredo sauce", "chicken"];
-        this.cookingTime = 8;
-    }
-
-    preparePenne() {
-        this.ingredients = ["penne", "pesto", "sun-dried tomatoes"];
-        this.cookingTime = 9;
-    }
-
-    // Method to start cooking and check if the dish is ready
-    cook() {
-        if (this.ingredients.length === 0) {
-            console.log("You need to prepare the pasta first!");
-            return;
+    
+    calculateSpiceLevel() {
+        let totalSpice = this.sauce.spiceLevel;
+    
+        for (let ingredient of this.ingredients) {
+          totalSpice += ingredient.spiceLevel;
         }
-
-        console.log(`Cooking ${this.type} for ${this.cookingTime} minutes...`);
-        setTimeout(() => {
-            this.isReady = true;
-            console.log(`${this.type} is ready to serve!`);
-        }, this.cookingTime * 1000); // Simulating cooking time
+    
+        this.spiceLevel = totalSpice;
+    }
+  
+    // General preparation method
+    prepare() {
+      console.log("Adding pasta to boiling water...");
+    }
+  
+    // Specific cook methods 
+    cookSpaghetti() {
+      console.log("Cooking spaghetti for", this.cookingTime, "minutes");
+    }
+  
+    cookFettuccine() {
+      console.log("Cooking fettuccine for", this.cookingTime, "minutes");
+    }
+  
+    cookPenne() {
+      console.log("Cooking penne for", this.cookingTime, "minutes");
+    }
+  
+    // Check if ready
+    checkReadiness() {
+      // Placeholder - you would implement actual readiness logic here
+      this.isReady = true; 
+      console.log("Your pasta is ready!");
     }
 }
 
-// How to use the class:
 let myPasta = new Pasta("spaghetti");
-myPasta.prepareSpaghetti(); // Using the type specific preparation
-myPasta.cook(); // Start cooking the pasta
+myPasta.calculateSpiceLevel();
+console.log(myPasta.sauce.name); // Outputs: "arrabiata sauce"
+console.log(myPasta.spiceLevel); // Outputs: 5
