@@ -1,7 +1,8 @@
 class Ingredient {
-    constructor(name, spiceLevel = 0) { // Default spice level to 0
+    constructor(name, spiceLevel = 0, required = false) { 
       this.name = name;
       this.spiceLevel = spiceLevel;
+      this.required = required;
     }
   }
   
@@ -53,9 +54,20 @@ class Ingredient {
           totalSpice += ingredient.spiceLevel;
         }
     
-        this.spiceLevel = totalSpice;
-    }
-  
+        this.spiceLevel = Math.min(10, totalSpice); // Cap spice at 10
+      }
+    
+      removeIngredient(ingredient) {
+        if (ingredient.required) {
+          console.log(`You cannot remove ${ingredient.name} because it's required for this dish.`);
+        } else {
+          const index = this.ingredients.indexOf(ingredient); 
+          if (index > -1) {
+            this.ingredients.splice(index, 1); 
+          }
+          this.calculateSpiceLevel(); // Recalculate spice after removal
+        }
+      }
     // General preparation method
     prepare() {
       console.log("Adding pasta to boiling water...");
@@ -82,7 +94,14 @@ class Ingredient {
     }
 }
 
-let myPasta = new Pasta("spaghetti");
-myPasta.calculateSpiceLevel();
-console.log(myPasta.sauce.name); // Outputs: "arrabiata sauce"
-console.log(myPasta.spiceLevel); // Outputs: 5
+const myPasta = new Pasta("spaghetti");
+
+// Add a non-removable ingredient
+myPasta.ingredients.push(new Ingredient("tomatoes", 0, true)); 
+
+console.log(myPasta.ingredients[1]); 
+// Try to remove a required ingredient
+myPasta.removeIngredient(myPasta.ingredients[1]); // Will output the error message
+
+// Remove a regular ingredient
+myPasta.removeIngredient(myPasta.ingredients[0]); 

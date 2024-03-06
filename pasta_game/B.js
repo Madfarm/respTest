@@ -1,9 +1,10 @@
 class Ingredient {
-    constructor(name, spiceLevel = 0) { // Default spice level to 0
-      this.name = name;
-      this.spiceLevel = spiceLevel;
+    constructor(name, spiceLevel = 0, required = false) {
+        this.name = name;
+        this.spiceLevel = spiceLevel;
+        this.required = required;
     }
-  }
+}
   
   class Sauce {
     constructor(name, spiceLevel) {
@@ -48,12 +49,25 @@ class Ingredient {
     
     calculateSpiceLevel() {
         let totalSpice = this.sauce.spiceLevel;
-    
         for (let ingredient of this.ingredients) {
-          totalSpice += ingredient.spiceLevel;
+            totalSpice += ingredient.spiceLevel;
         }
-    
-        this.spiceLevel = totalSpice;
+        // Cap spice level at 10:
+        this.spiceLevel = Math.min(totalSpice, 10); 
+    }
+
+    removeIngredient(ingredientName) {
+        const ingredientIndex = this.ingredients.findIndex(ingredient => ingredient.name === ingredientName);
+        if (ingredientIndex !== -1) {
+            if (this.ingredients[ingredientIndex].required) {
+                console.log("Cannot remove", ingredientName, "- it's required for this pasta dish!");
+            } else {
+                this.ingredients.splice(ingredientIndex, 1);
+                console.log(ingredientName, "removed from the dish."); 
+            }
+        } else {
+            console.log("Ingredient not found in the dish.");
+        }
     }
   
     // General preparation method
@@ -82,7 +96,7 @@ class Ingredient {
     }
 }
 
-let myPasta = new Pasta("spaghetti");
-myPasta.calculateSpiceLevel();
-console.log(myPasta.sauce.name); // Outputs: "arrabiata sauce"
-console.log(myPasta.spiceLevel); // Outputs: 5
+const myPasta = new Pasta("spaghetti");
+myPasta.removeIngredient("ground beef"); // Successfully removes
+myPasta.removeIngredient("garlic") // Removes as garlic is not required
+myPasta.removeIngredient("pasta") // Would log "Cannot remove pasta - it's required for this pasta dish!" assuming we added a required pasta ingredient
