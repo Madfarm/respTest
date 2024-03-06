@@ -39,14 +39,29 @@ class Symphony {
         console.log("The Grand Underwater Symphony Begins:");
         this.swans.forEach(swan => swan.playMelody());
     }
+
+    saveSymphony() {
+        const symphonyData = JSON.stringify(this.swans);
+        localStorage.setItem('savedSymphony', symphonyData);
+        console.log('Symphony saved to localStorage!');
+      }
+    
+      loadSymphony() {
+        const symphonyData = localStorage.getItem('savedSymphony');
+        if (symphonyData) {
+          const swansData = JSON.parse(symphonyData);
+          this.swans = swansData.map(swanData => new Swan(swanData.name, swanData.instrument, swanData.id, swanData.melody));
+          console.log('Symphony loaded from localStorage!');
+        }
+      }
 }
 
 // Create a new symphony
 let underwaterSymphony = new Symphony();
 
 // Add some swans
-underwaterSymphony.addSwan("Grace", "flute", 1, "Twinkle, twinkle, little star");
-underwaterSymphony.addSwan("Lily", "piano", 2, "Do-Re-Mi");
+underwaterSymphony.addSwan("fuggyqweqwe", "flute", 1, "Twinkle, twinkle, little star");
+underwaterSymphony.addSwan("weqweqweqwe", "piano", 2, "Do-Re-Mi");
 underwaterSymphony.addSwan("Charlie", "cello", 3, "A-B-C-D-E");
 
 
@@ -58,6 +73,11 @@ charlie.assignInstrument("violin");
 
 // Change Charlie's melody
 charlie.assignMelody("E-F-G-A-B");
+
+underwaterSymphony.saveSymphony();
+
+// ... later, perhaps in a new session
+underwaterSymphony.loadSymphony();
 
 // Grand finale!
 underwaterSymphony.playGrandFinale();
