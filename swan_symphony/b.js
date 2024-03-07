@@ -22,7 +22,7 @@ class Swan {
         console.log(`${this.name}'s melody has been updated`);
     }
 
-    
+
 }
 
 class Symphony {
@@ -47,20 +47,26 @@ class Symphony {
     saveSymphony() {
         const symphonyData = JSON.stringify(this.swans);
         fs.writeFileSync('symphony_data.json', symphonyData);
-        console.log("Symphony saved to symphony_data.json");
-      }
-    
-      loadSymphony() {
+        this.logActivity('Saved', symphonyData);
+    }
+
+    loadSymphony() {
         try {
-          const savedData = fs.readFileSync('symphony_data.json', 'utf-8'); 
-          this.swans = JSON.parse(savedData).map(swanData => 
-            new Swan(swanData.name, swanData.instrument, swanData.id, swanData.melody)
-          );
-          console.log("Symphony loaded from symphony_data.json");
+            const savedData = fs.readFileSync('symphony_data.json', 'utf-8');
+            this.swans = JSON.parse(savedData).map(swanData =>
+                new Swan(swanData.name, swanData.instrument, swanData.id, swanData.melody)
+            );
+            this.logActivity('Loaded', savedData);
         } catch (err) {
-          console.error("Error loading symphony data:", err);
+            console.error("Error loading symphony data:", err);
         }
-      }
+    }
+
+    logActivity(action, data) {
+        const timestamp = new Date().toLocaleString();
+        const logEntry = `[${timestamp}] Symphony ${action}: ${data}\n`;
+        fs.appendFileSync('symphony_log.txt', logEntry);
+    }
 }
 
 // Create a new symphony
